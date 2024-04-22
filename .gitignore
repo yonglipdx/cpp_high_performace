@@ -1,7 +1,6 @@
 .vscode
 build
 
-
 # CMake
 generate.stamp
 generate.stamp.depend

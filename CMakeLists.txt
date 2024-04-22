@@ -1,9 +1,24 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.2)
+
+set(DEBUG_MODE ON)
 
 # Use hunter to download and build some third party dependencies
+
+# update HunterGate to the latest version when needed: see: 
+# https://hunter.readthedocs.io/en/latest/quick-start/boost-components.html#first-step
+
+# mkdir cmake
+# wget https://raw.githubusercontent.com/cpp-pm/gate/master/cmake/HunterGate.cmake -O cmake/HunterGate.cmake
+
 include("cmake/HunterGate.cmake")
 
-huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.279.tar.gz" SHA1 "0a8ede485c3e9c1ceed8ccb989ab6c0aba1f4db7")
+#update hunter archives version/hash by looking at hunter release: https://github.com/cpp-pm/hunter/releases
+
+huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.25.5.tar.gz" SHA1 "a20151e4c0740ee7d0f9994476856d813cdead29")
+#huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.279.tar.gz" SHA1 "0a8ede485c3e9c1ceed8ccb989ab6c0aba1f4db7")
+#untergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.297.tar.gz" SHA1 "3319fe6a3b08090df7df98dee75134d68e2ef5a3")
+#HunterGate( URL "https://github.com/path/to/hunter/archive.tar.gz" SHA1 "798501e983f14b28b10cda16afa4de69eee1da1d" )
+#huntergate(URL "https://github.com/cpp-pm/hunter/archive/v0.23.224.tar.gz" SHA1 "18e57a43efc435f2e1dae1291e82e42afbf940be")
 
 project(CppHighPerformanceCodeExamples)
 
@@ -16,6 +31,13 @@ set(CMAKE_CXX_EXTENSIONS NO)
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /await")
 endif()
+
+if(DEBUG_MODE)
+  message("*************************MSVC Done\n\n")
+else()
+  message("Skip debug")
+endif()
+
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unused-variable -Wno-unused-but-set-variable")
@@ -32,9 +54,16 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   endif()
 endif()
 
+
 hunter_add_package(Boost)
+message("************************* Boost Done\n\n")
+
+
 hunter_add_package(GTest)
+message("************************* GTest Done\n\n")
+
 hunter_add_package(benchmark)
+message("************************* benchmark Done\n\n")
 
 find_package(Boost CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
